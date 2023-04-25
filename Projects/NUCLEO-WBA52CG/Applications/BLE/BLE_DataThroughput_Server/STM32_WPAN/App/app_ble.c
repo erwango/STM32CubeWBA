@@ -231,7 +231,7 @@ static const char a_GapDeviceName[] = {  'D', 'a', 't', 'a', ' ', 'T', 'r', 'a',
 /**
  * Advertising Data
  */
-uint8_t a_AdvData[23] =
+uint8_t a_AdvDiti[23] =
 {
   6, AD_TYPE_COMPLETE_LOCAL_NAME, 'D', 'T', '_', 'X', 'X',  /* Complete name */
   15, AD_TYPE_MANUFACTURER_SPECIFIC_DATA, 0x30, 0x00, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */,
@@ -918,7 +918,7 @@ void APP_BLE_Procedure_Gap_Peripheral(ProcGapPeripheralId_t ProcGapPeripheralId)
       }
 
       /* Update Advertising data */
-      status = aci_gap_update_adv_data(sizeof(a_AdvData), (uint8_t*) a_AdvData);
+      status = aci_gap_update_adv_data(sizeof(a_AdvDiti), (uint8_t*) a_AdvDiti);
       if (status != BLE_STATUS_SUCCESS)
       {
         APP_DBG_MSG("==>> Start Advertising Failed, result: 0x%02X\n", status);
@@ -945,7 +945,7 @@ void APP_BLE_Procedure_Gap_Peripheral(ProcGapPeripheralId_t ProcGapPeripheralId)
     }/* PROC_GAP_PERIPH_ADVERTISE_STOP */
     case PROC_GAP_PERIPH_ADVERTISE_DATA_UPDATE:
     {
-      status = aci_gap_update_adv_data(sizeof(a_AdvData), (uint8_t*) a_AdvData);
+      status = aci_gap_update_adv_data(sizeof(a_AdvDiti), (uint8_t*) a_AdvDiti);
       if (status != BLE_STATUS_SUCCESS)
       {
         APP_DBG_MSG("aci_gap_update_adv_data - fail, result: 0x%02X\n",status);
@@ -1253,7 +1253,7 @@ static void Ble_Hci_Gap_Gatt_Init(void)
   bleAppContext.BleApplicationContext_legacy.bleSecurityParam.Fixed_Pin             = CFG_FIXED_PIN;
   bleAppContext.BleApplicationContext_legacy.bleSecurityParam.bonding_mode          = CFG_BONDING_MODE;
   /* USER CODE BEGIN Ble_Hci_Gap_Gatt_Init_1*/
-  fill_advData(&a_AdvData[0], sizeof(a_AdvData), p_bd_addr);
+  fill_advData(&a_AdvDiti[0], sizeof(a_AdvDiti), p_bd_addr);
   /* USER CODE END Ble_Hci_Gap_Gatt_Init_1*/
 
   ret = aci_gap_set_authentication_requirement(bleAppContext.BleApplicationContext_legacy.bleSecurityParam.bonding_mode,
@@ -1715,7 +1715,7 @@ static void Adv_Request(APP_BLE_ConnStatus_t NewStatus)
   }
 
   /* Update Advertising data */
-  ret = aci_gap_update_adv_data(sizeof(a_AdvData), (uint8_t*) a_AdvData);
+  ret = aci_gap_update_adv_data(sizeof(a_AdvDiti), (uint8_t*) a_AdvDiti);
   if (ret != BLE_STATUS_SUCCESS)
   {
       APP_DBG_MSG("==>> Start Fast Advertising Failed , result: 0x%02X\n", ret);

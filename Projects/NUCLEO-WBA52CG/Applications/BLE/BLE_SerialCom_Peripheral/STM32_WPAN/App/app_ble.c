@@ -146,7 +146,7 @@ typedef struct
   uint8_t a_deviceServerBdAddr[BD_ADDR_SIZE];
   uint8_t a_deviceServerExtendedBdAddr[BD_ADDR_SIZE];
   uint8_t deviceServerExtendedAddressType;
-  
+
   /* Advertising timeout timerID*/
   UTIL_TIMER_Object_t Advertising_mgr_timer_Id;
   uint8_t PeriphChannelIndex;
@@ -222,7 +222,7 @@ static const char a_GapDeviceName[] = {  'S', 'e', 'r', 'i', 'a', 'l', ' ', 'C',
 /**
  * Advertising Data
  */
-uint8_t a_AdvData[23] =
+uint8_t a_AdvDiti[23] =
 {
   6, AD_TYPE_COMPLETE_LOCAL_NAME, 'S', 'C', '_', 'X', 'X',  /* Complete name */
   15, AD_TYPE_MANUFACTURER_SPECIFIC_DATA, 0x30, 0x00, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */, 0x00 /*  */,
@@ -330,8 +330,8 @@ void APP_BLE_Init(void)
   COC_PERIPH_APP_Init();
 
   UTIL_SEQ_RegTask(1<<CFG_TASK_CONN_UPDATE_REG_ID, UTIL_SEQ_RFU, Connection_Interval_Update_Req);
-  UTIL_SEQ_RegTask(1<<CFG_TASK_PERIPH_SECURITY_REQ_ID, UTIL_SEQ_RFU, Periph_security_request); 
-    
+  UTIL_SEQ_RegTask(1<<CFG_TASK_PERIPH_SECURITY_REQ_ID, UTIL_SEQ_RFU, Periph_security_request);
+
   Adv_Request(APP_BLE_ADV_FAST);
 
   /* USER CODE END APP_BLE_Init_2 */
@@ -402,13 +402,13 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *p_Pckt)
                        p_conn_update_complete->Supervision_Timeout*10);
           UNUSED(p_conn_update_complete);
           /* USER CODE BEGIN EVT_LE_CONN_UPDATE_COMPLETE */
-            
-          HandleNotification.ConnectionHandle = p_conn_update_complete->Connection_Handle;            
+
+          HandleNotification.ConnectionHandle = p_conn_update_complete->Connection_Handle;
           /* Connection as periph */
           HandleNotification.CoC_Evt_Opcode = BLE_CONN_UPDATE_EVT;
           COC_PERIPH_APP_Notification(&HandleNotification);
 
-            
+
           /* USER CODE END EVT_LE_CONN_UPDATE_COMPLETE */
           break;
         }
@@ -494,17 +494,17 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *p_Pckt)
           /* USER CODE BEGIN HCI_EVT_LE_CONN_COMPLETE */
 
           HandleNotification.ConnectionHandle = p_conn_complete->Connection_Handle;
-          
+
           /* Connection as periph */
           HandleNotification.CoC_Evt_Opcode = BLE_CONN_HANDLE_EVT;
-          
+
           COC_PERIPH_APP_Notification(&HandleNotification);
-          
+
           if (p_conn_complete->Role == HCI_ROLE_CENTRAL)
           {
             UTIL_SEQ_SetEvt(1 << CFG_IDLEEVT_CONNECTION_COMPLETE);
           }
-          
+
           /* USER CODE END HCI_EVT_LE_CONN_COMPLETE */
           break; /* HCI_LE_CONNECTION_COMPLETE_SUBEVT_CODE */
         }
@@ -649,25 +649,25 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *p_Pckt)
         {
           aci_l2cap_coc_connect_event_rp0 *coc_connect_complete;
           coc_connect_complete = (aci_l2cap_coc_connect_event_rp0*)p_blecore_evt->data;
-            
+
           APP_DBG_MSG(">>== ACI_L2CAP_COC_CONNECT_VSEVT_CODE\n");
           BleCoCContextPeriph.Conn_Handle = coc_connect_complete->Connection_Handle;
           BleCoCContextPeriph.Max_Transmission_Unit = coc_connect_complete->MTU;
           BleCoCContextPeriph.Max_Payload_Size = coc_connect_complete->MPS;
           BleCoCContextPeriph.Initial_Credits = coc_connect_complete->Initial_Credits;
           BleCoCContextPeriph.Channel_Number = coc_connect_complete->Channel_Number;
-          BleCoCContextPeriph.SPSM = coc_connect_complete->SPSM;            
-          
-          ret = aci_l2cap_coc_connect_confirm(BleCoCContextPeriph.Conn_Handle, BleCoCContextPeriph.Max_Transmission_Unit, BleCoCContextPeriph.Max_Payload_Size, BleCoCContextPeriph.Initial_Credits, 0x0000, &Channel_Number, &Channel_Index_List); 
+          BleCoCContextPeriph.SPSM = coc_connect_complete->SPSM;
+
+          ret = aci_l2cap_coc_connect_confirm(BleCoCContextPeriph.Conn_Handle, BleCoCContextPeriph.Max_Transmission_Unit, BleCoCContextPeriph.Max_Payload_Size, BleCoCContextPeriph.Initial_Credits, 0x0000, &Channel_Number, &Channel_Index_List);
           BleCoCContextPeriph.Channel_Number = Channel_Number;
           BleCoCContextPeriph.Channel_Index_List = Channel_Index_List;
           bleAppContext.PeriphChannelIndex = BleCoCContextPeriph.Channel_Index_List;
-          
+
           if (ret != BLE_STATUS_SUCCESS)
           {
             APP_DBG_MSG("==>> aci_l2cap_coc_connect_confirm : Fail, reason: 0x%02X\n", ret);
-          } 
-          else 
+          }
+          else
           {
             APP_DBG_MSG("==>> aci_l2cap_coc_connect_confirm : Success\n");
           }
@@ -681,17 +681,17 @@ SVCCTL_UserEvtFlowStatus_t SVCCTL_App_Notification(void *p_Pckt)
           aci_att_exchange_mtu_resp_event_rp0 * exchange_mtu_resp;
           exchange_mtu_resp = (aci_att_exchange_mtu_resp_event_rp0 *)p_blecore_evt->data;
           APP_DBG_MSG(">>== MTU_size = %d\n",exchange_mtu_resp->Server_RX_MTU );
-          APP_DBG_MSG("\n");            
+          APP_DBG_MSG("\n");
           APP_DBG_MSG("\n>>== CONNECTION READY\n");
           break;
-        }        
+        }
         case (ACI_L2CAP_COC_RX_DATA_VSEVT_CODE):
         {
           aci_l2cap_coc_rx_data_event_rp0 *coc_rx_data_event;
           uint8_t i;
 
           coc_rx_data_event = (aci_l2cap_coc_rx_data_event_rp0*)p_blecore_evt->data;
-          
+
           HandleNotification.CoC_Evt_Opcode = L2CAP_DATA_RECEIVED;
           HandleNotification.ConnectionHandle = bleAppContext.BleApplicationContext_legacy.connectionHandle;
           HandleNotification.DataLength = coc_rx_data_event->Length;
@@ -1010,7 +1010,7 @@ static void Ble_Hci_Gap_Gatt_Init(void)
   bleAppContext.BleApplicationContext_legacy.bleSecurityParam.Fixed_Pin             = CFG_FIXED_PIN;
   bleAppContext.BleApplicationContext_legacy.bleSecurityParam.bonding_mode          = CFG_BONDING_MODE;
   /* USER CODE BEGIN Ble_Hci_Gap_Gatt_Init_1*/
-  fill_advData(&a_AdvData[0], sizeof(a_AdvData), p_bd_addr);
+  fill_advData(&a_AdvDiti[0], sizeof(a_AdvDiti), p_bd_addr);
   /* USER CODE END Ble_Hci_Gap_Gatt_Init_1*/
 
   ret = aci_gap_set_authentication_requirement(bleAppContext.BleApplicationContext_legacy.bleSecurityParam.bonding_mode,
@@ -1166,13 +1166,13 @@ static void fill_advData(uint8_t *p_adv_data, uint8_t tab_size, const uint8_t* p
 {
   uint16_t i =0;
   uint8_t bd_addr_1, bd_addr_0;
-  uint8_t ad_length, ad_type;  
-  
+  uint8_t ad_length, ad_type;
+
   while(i < tab_size)
   {
     ad_length = p_adv_data[i];
     ad_type = p_adv_data[i + 1];
-      
+
     switch (ad_type)
     {
     case AD_TYPE_FLAGS:
@@ -1185,7 +1185,7 @@ static void fill_advData(uint8_t *p_adv_data, uint8_t tab_size, const uint8_t* p
         {
           bd_addr_1 = ((p_bd_addr[0] & 0xF0)>>4);
           bd_addr_0 = (p_bd_addr[0] & 0xF);
-          
+
           /* Convert hex value into ascii */
           if(bd_addr_1 > 0x09)
           {
@@ -1195,7 +1195,7 @@ static void fill_advData(uint8_t *p_adv_data, uint8_t tab_size, const uint8_t* p
           {
             p_adv_data[i + ad_length - 1] = bd_addr_1 + '0';
           }
-          
+
           if(bd_addr_0 > 0x09)
           {
             p_adv_data[i + ad_length] = bd_addr_0 + '7';
@@ -1322,7 +1322,7 @@ static void Adv_Request(APP_BLE_ConnStatus_t NewStatus)
   }
 
   /* Update Advertising data */
-  ret = aci_gap_update_adv_data(sizeof(a_AdvData), (uint8_t*) a_AdvData);
+  ret = aci_gap_update_adv_data(sizeof(a_AdvDiti), (uint8_t*) a_AdvDiti);
   if (ret != BLE_STATUS_SUCCESS)
   {
       APP_DBG_MSG("==>> Start Fast Advertising Failed , result: 0x%02X\n", ret);
@@ -1358,7 +1358,7 @@ static void Connection_Interval_Update_Req(void)
 {
   if (bleAppContext.Device_Connection_Status != APP_BLE_IDLE)
   {
-    BLE_SVC_L2CAP_Conn_Update(bleAppContext.BleApplicationContext_legacy.connectionHandle, 
+    BLE_SVC_L2CAP_Conn_Update(bleAppContext.BleApplicationContext_legacy.connectionHandle,
                               CONN_INT_MS(45), CONN_INT_MS(45));
   }
   BleStackCB_Process();

@@ -209,7 +209,7 @@ static const char a_GapDeviceName[] = {  'B', 'e', 'a', 'c', 'o', 'n' }; /* Gap 
 /**
  * Advertising Data
  */
-uint8_t a_AdvData[13] =
+uint8_t a_AdvDiti[13] =
 {
   7, AD_TYPE_COMPLETE_LOCAL_NAME, 'B', 'E', 'A', 'C', 'O', 'N',  /* Complete name */
   4, AD_TYPE_MANUFACTURER_SPECIFIC_DATA, 0x30, 0x00, 0x00 /*  */,

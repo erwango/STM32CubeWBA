@@ -172,7 +172,7 @@ extern UART_HandleTypeDef huart1;
 void APP_BLE_Init(void)
 {
   /* USER CODE BEGIN APP_BLE_Init_1 */
-  
+
   /* USER CODE END APP_BLE_Init_1 */
 
   UTIL_SEQ_RegTask(1U << CFG_TASK_BLE_HOST, UTIL_SEQ_RFU, BleStack_Process_BG);
@@ -286,8 +286,8 @@ static void TM_Init( void )
   BLEUART_Read(&huart1, HCI_GetFreeRxBuffer(), 1 /*IDENTIFIER_OFFSET*/);
 
 /* USER CODE BEGIN TM_Init*/
-  UTIL_LPM_SetOffMode(1 << CFG_LPM_APP_BLE, UTIL_LPM_DISABLE);
-  UTIL_LPM_SetStopMode(1<<CFG_LPM_APP_BLE, UTIL_LPM_DISABLE);
+  UTIL_LPM_SetOffMode(1 << CFG_LDM_APP_BLE, UTIL_LPM_DISABLE);
+  UTIL_LPM_SetStopMode(1<<CFG_LDM_APP_BLE, UTIL_LPM_DISABLE);
   LowPowerModeStatus = LOW_POWER_MODE_DISABLE;
 /* USER CODE END TM_Init*/
 
@@ -668,13 +668,13 @@ static void TM_SetLowPowerMode(void)
   {
     BSP_LED_Off(LED_GREEN);
     LowPowerModeStatus = LOW_POWER_MODE_ENABLE;
-    UTIL_LPM_SetStopMode(1<<CFG_LPM_APP_BLE, UTIL_LPM_ENABLE);
+    UTIL_LPM_SetStopMode(1<<CFG_LDM_APP_BLE, UTIL_LPM_ENABLE);
   }
   else
   {
     BSP_LED_On(LED_GREEN);
     LowPowerModeStatus = LOW_POWER_MODE_DISABLE;
-    UTIL_LPM_SetStopMode(1<<CFG_LPM_APP_BLE, UTIL_LPM_DISABLE);
+    UTIL_LPM_SetStopMode(1<<CFG_LDM_APP_BLE, UTIL_LPM_DISABLE);
   }
   return;
 }

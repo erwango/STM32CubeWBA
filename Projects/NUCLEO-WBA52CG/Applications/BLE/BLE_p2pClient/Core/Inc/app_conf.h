@@ -264,22 +264,22 @@
  ******************************************************************************/
 #define CFG_FULL_LOW_POWER       (0)
 
-#define CFG_LPM_SUPPORTED        (0)
-#define CFG_LPM_STDBY_SUPPORTED  (0)
+#define CFG_LDM_SUPPORTED        (0)
+#define CFG_LDM_STDBY_SUPPORTED  (0)
 
 /**
  * Low Power configuration
  */
 #if (CFG_FULL_LOW_POWER == 1)
-  #undef CFG_LPM_SUPPORTED
-  #define CFG_LPM_SUPPORTED      (1)
+  #undef CFG_LDM_SUPPORTED
+  #define CFG_LDM_SUPPORTED      (1)
 
   #undef  CFG_DBG_SUPPORTED
   #define CFG_DBG_SUPPORTED      (0)
 
 #else
-  #undef CFG_LPM_SUPPORTED
-  #define CFG_LPM_SUPPORTED      (0)
+  #undef CFG_LDM_SUPPORTED
+  #define CFG_LDM_SUPPORTED      (0)
 #endif /* CFG_FULL_LOW_POWER */
 
 /* USER CODE BEGIN Low_Power 0 */
@@ -292,11 +292,11 @@
  */
 typedef enum
 {
-  CFG_LPM_APP,
-  /* USER CODE BEGIN CFG_LPM_Id_t */
+  CFG_LDM_APP,
+  /* USER CODE BEGIN CFG_LDM_Id_t */
 
-  /* USER CODE END CFG_LPM_Id_t */
-} CFG_LPM_Id_t;
+  /* USER CODE END CFG_LDM_Id_t */
+} CFG_LDM_Id_t;
 
 /* USER CODE BEGIN Low_Power 1 */
 
@@ -346,8 +346,8 @@ typedef enum
 #endif
 
 #if (CFG_DEBUG_TRACE != 0)
-#undef CFG_LPM_SUPPORTED
-#define CFG_LPM_SUPPORTED           (0)
+#undef CFG_LDM_SUPPORTED
+#define CFG_LDM_SUPPORTED           (0)
 #endif
 
 /**

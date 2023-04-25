@@ -84,7 +84,7 @@ static uint8_t ADV_EXT_Set_data(Adv_Set_Param_t *adv_param, uint8_t data_slice, 
 
 /* External variables --------------------------------------------------------*/
 extern RNG_HandleTypeDef hrng;
-extern uint8_t a_AdvData[28];
+extern uint8_t a_AdvDiti[28];
 /* USER CODE BEGIN EV */
 
 uint8_t a_peeraddr[8];
@@ -137,8 +137,8 @@ uint8_t ADV_EXT_Config(void)
 
 /* Extended CONNECTABLE with p2pClient_Ext device */
   data_cpt = 0;
-  memcpy(&a_p2p_extended_buff[0], &a_AdvData[0], sizeof(a_AdvData));
-  data_cpt += sizeof(a_AdvData);
+  memcpy(&a_p2p_extended_buff[0], &a_AdvDiti[0], sizeof(a_AdvDiti));
+  data_cpt += sizeof(a_AdvDiti);
   
   i = 2;
   adv_set_param[i].enable = 1;
@@ -161,8 +161,8 @@ uint8_t ADV_EXT_Config(void)
 /* Legacy */
   data_cpt = 0;
 
-  memcpy(&a_p2p_legacy_buff[data_cpt], &a_AdvData[0], sizeof(a_AdvData));
-  data_cpt += sizeof(a_AdvData);
+  memcpy(&a_p2p_legacy_buff[data_cpt], &a_AdvDiti[0], sizeof(a_AdvDiti));
+  data_cpt += sizeof(a_AdvDiti);
   a_p2p_legacy_buff[data_cpt++] = 0x02;
   a_p2p_legacy_buff[data_cpt++] = AD_TYPE_FLAGS;
   a_p2p_legacy_buff[data_cpt++] = FLAG_BIT_LE_GENERAL_DISCOVERABLE_MODE | FLAG_BIT_BR_EDR_NOT_SUPPORTED;

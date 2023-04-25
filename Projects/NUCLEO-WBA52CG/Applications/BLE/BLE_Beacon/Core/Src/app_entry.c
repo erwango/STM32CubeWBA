@@ -66,9 +66,9 @@
 
 /* Private variables ---------------------------------------------------------*/
 
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
 static bool system_startup_done = FALSE;
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
 
 static uint32_t AMM_Pool[CFG_AMM_POOL_SIZE];
 static AMM_InitParameters_t ammInitConfig =
@@ -187,9 +187,9 @@ uint32_t MX_APPE_Init(void *p_param)
 
   APP_BLE_Init();
   ll_sys_config_params();
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
   system_startup_done = TRUE;
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
 
   /* Disable RFTS Bypass for flash operation - Since LL has not started yet */
   FD_SetStatus (FD_FLASHACCESS_RFTS_BYPASS, LL_FLASH_DISABLE);
@@ -266,13 +266,13 @@ static void SystemPower_Config(void)
  /* Initialize low power manager */
   UTIL_LPM_Init();
 
-#if (CFG_LPM_STDBY_SUPPORTED == 1)
+#if (CFG_LDM_STDBY_SUPPORTED == 1)
   /* Enable SRAM1, SRAM2 and RADIO retention*/
   LL_PWR_SetSRAM1SBRetention(LL_PWR_SRAM1_SB_FULL_RETENTION);
   LL_PWR_SetSRAM2SBRetention(LL_PWR_SRAM2_SB_FULL_RETENTION);
   LL_PWR_SetRadioSBRetention(LL_PWR_RADIO_SB_FULL_RETENTION); /* Retain sleep timer configuration */
 #else
-  UTIL_LPM_SetOffMode(1 << CFG_LPM_APP, UTIL_LPM_DISABLE);
+  UTIL_LPM_SetOffMode(1 << CFG_LDM_APP, UTIL_LPM_DISABLE);
 #endif
 }
 
@@ -312,17 +312,17 @@ void MX_APPE_Process(void)
 
 void UTIL_SEQ_Idle( void )
 {
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
   HAL_SuspendTick();
   UTIL_LPM_EnterLowPower();
   HAL_ResumeTick();
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
   return;
 }
 
 void UTIL_SEQ_PreIdle( void )
 {
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
   LL_PWR_ClearFlag_STOP();
 
   if(system_startup_done)
@@ -338,16 +338,16 @@ void UTIL_SEQ_PreIdle( void )
   UTILS_ENTER_LIMITED_CRITICAL_SECTION(RCC_INTR_PRIO<<4);
   scm_hserdy_isr();
   UTILS_EXIT_LIMITED_CRITICAL_SECTION();
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
   return;
 }
 
 void UTIL_SEQ_PostIdle( void )
 {
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
   LL_AHB5_GRP1_EnableClock(LL_AHB5_GRP1_PERIPH_RADIO);
   ll_sys_dp_slp_exit();
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
   return;
 }
 

@@ -69,9 +69,9 @@ EXTI_HandleTypeDef exti_handle;
 
 /* Private variables ---------------------------------------------------------*/
 
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
 static bool system_startup_done = FALSE;
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
 
 static uint32_t AMM_Pool[CFG_AMM_POOL_SIZE];
 static AMM_InitParameters_t ammInitConfig =
@@ -199,9 +199,9 @@ void MX_APPE_Init(void)
 
   APP_BLE_Init();
   ll_sys_config_params();
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
   system_startup_done = TRUE;
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
 
 /* USER CODE BEGIN APPE_Init_2 */
 
@@ -282,13 +282,13 @@ static void SystemPower_Config(void)
  /* Initialize low power manager */
   UTIL_LPM_Init();
 
-#if (CFG_LPM_STDBY_SUPPORTED == 1)
+#if (CFG_LDM_STDBY_SUPPORTED == 1)
   /* Enable SRAM1, SRAM2 and RADIO retention*/
   LL_PWR_SetSRAM1SBRetention(LL_PWR_SRAM1_SB_FULL_RETENTION);
   LL_PWR_SetSRAM2SBRetention(LL_PWR_SRAM2_SB_FULL_RETENTION);
   LL_PWR_SetRadioSBRetention(LL_PWR_RADIO_SB_FULL_RETENTION); /* Retain sleep timer configuration */
 #else
-  UTIL_LPM_SetOffMode(1 << CFG_LPM_APP, UTIL_LPM_DISABLE);
+  UTIL_LPM_SetOffMode(1 << CFG_LDM_APP, UTIL_LPM_DISABLE);
 #endif
 }
 
@@ -353,11 +353,11 @@ void MX_APPE_Process(void)
 
 void UTIL_SEQ_Idle( void )
 {
-#if ( CFG_LPM_SUPPORTED == 1)
+#if ( CFG_LDM_SUPPORTED == 1)
   HAL_SuspendTick();
   UTIL_LPM_EnterLowPower();
   HAL_ResumeTick();
-#endif /* CFG_LPM_SUPPORTED */
+#endif /* CFG_LDM_SUPPORTED */
   return;
 }
 
